@@ -1,0 +1,21 @@
+# Training data (too large for git)
+dataset/images_dataset/
+
+# Generated model conversions
+models/*_tfjs_model/
+models/*_web/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

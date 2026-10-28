@@ -1,9 +1,13 @@
+from pathlib import Path
+
 import torch
 from torchvision.models import resnet50, ResNet50_Weights
 
 # 1. Define the parameters you used during training
 num_classes = 2
-PATH = "modelos guardados/resnet50_finetunedV2.pth"
+MODELS_DIR = Path(__file__).resolve().parent.parent / "models"
+PATH = MODELS_DIR / "resnet50_finetunedV2.pth"
+ONNX_PATH = MODELS_DIR / "resnet50_classifier.onnx"
 
 # 2. Re-instantiate the base model with the exact same weights argument
 model = resnet50(weights=ResNet50_Weights.IMAGENET1K_V1)
@@ -24,7 +28,7 @@ dummy_input = torch.randn(1, 3, 512, 512)
 torch.onnx.export(
     model,
     dummy_input,
-    "modelos guardados/resnet50_classifier.onnx",
+    ONNX_PATH,
     input_names=["image"],
     output_names=["prediction"],
     dynamic_axes={
@@ -42,7 +46,7 @@ print("✅ Model exported to ONNX format!")
 # Optional: Verify the ONNX model
 try:
     import onnx
-    onnx_model = onnx.load("modelos guardados/resnet50_classifier.onnx")
+    onnx_model = onnx.load(str(ONNX_PATH))
     onnx.checker.check_model(onnx_model)
     print("✅ ONNX model is valid!")
 except ImportError:
